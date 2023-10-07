@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+		<link
+			rel="shortcut icon"
+			href="{{ url_for('static', filename='images/topIcon.webp') }}"
+			type="image/x-icon"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='style.css') }}"
+		/>
+		<script src="{{ url_for('static', filename='script.js') }}"></script>
+		<title>Image Uploader</title>
+	</head>
+	<body>
+		<!-- Main Container for Uploading Part -->
+		<div class="container mt-5 shadow _container">
+			<!-- Title - Upload Image -->
+			<h1 class="text-center pt-4 display-6 fw-bold">UPLOAD IMAGE</h1>
+			<!-- Uploading Input -->
+			<div class="container col-md-6 py-4 text-center">
+				<div
+					class="btn uploadBtn btn-rounded rounded-pill text-center px-4 py-2"
+				>
+					<!-- Label for Input -->
+					<label
+						class="form-label m-0 d-flex justify-content-around pointerCursor"
+						for="formFile"
+					>
+						<div class="me-3">
+							<img
+								src="{{ url_for('static', filename='images/image-regular.svg') }}"
+								class="img-fluid uploadImg"
+							/>
+						</div>
+						<div class="d-flex align-items-center justify-content-center">
+							<h4 class="m-0">Choose File</h4>
+						</div>
+					</label>
+					<!-- Input to select image -->
+					<input
+						class="form-control d-none uploadBtn"
+						type="file"
+						name="image"
+						accept="image/*"
+						id="formFile"
+						onchange="preview()"
+					/>
+				</div>
+				<!-- Container to display uploaded image -->
+				<div class="container mt-4 uploadedImgDiv">
+					<img id="frame" src="" class="img-fluid uploadedImg border" />
+				</div>
+			</div>
+			<!-- Upload Button -->
+			<div
+				class="container d-flex justify-content-center align-items-center pb-4"
+			>
+				<button
+					class="btn uploadBtnDown rounded-pill px-4 py-2 d-flex align-items-center"
+					onclick="sendImageToServer()"
+				>
+					<div class="me-3">
+						<img
+							src="{{ url_for('static', filename='images/upload.svg') }}"
+							alt=""
+							class="img-fluid uploadImg2"
+						/>
+					</div>
+					<div>
+						<h6 class="m-0 uploadFont">UPLOAD</h6>
+					</div>
+				</button>
+				<div class="spinner-border ms-4" role="status" id="uploadLoader">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+				<div id="uploadSuccess">
+					<lottie-player
+						src="{{ url_for('static', filename='anims/tick.json') }}"
+						background="transparent"
+						speed="1"
+						id="uploadSuccessAnim"
+					></lottie-player>
+				</div>
+			</div>
+		</div>
+		<!-- Container to display the uploaded images -->
+		<div class="container">
+			<h1 class="text-center pt-4 display-6 fw-normal">UPLOADED IMAGES</h1>
+			<div id="imagesContainer"></div>
+		</div>
+		<div
+			class="modal fade"
+			id="imageModal"
+			tabindex="-1"
+			aria-labelledby="imageModalLabel"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button
+							type="button"
+							class="btn-close float-end"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+					</div>
+					<div class="modal-body align-items-center text-center">
+						<img
+							id="modalImage"
+							src=""
+							alt="Clicked Image"
+							class="img-fluid modelImageStyle"
+						/>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<button
+							type="button"
+							class="btn px-3 py-2 rounded-pill d-flex align-items-center justify-content-between downloadBtn"
+							onclick="downloadImageHandler()"
+						>
+							<div>
+								<img
+									src="{{ url_for('static', filename='images/download.png') }}"
+									alt=""
+									class="downloadImage me-2"
+								/>
+							</div>
+							<div class="d-flex align-items-center">
+								<p class="m-0 fs-5 fw-bold">DOWNLOAD</p>
+							</div>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Script for BootStrap -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>
