@@ -73,11 +73,15 @@ function sendImageToServer() {
 			method: "POST",
 			body: formData,
 		})
-			.then((response) => response.json())
-			.then((data) => {
+			.then(async (response) => {
+				const data = await response.json();
 				console.log(data);
-				// Handle response from server here
-				handlePostUpload(data.data);
+				if (response.status == 500) {
+					alert("Failed to upload image. Server Error !!");
+					loader.style.display = "none";
+				} else {
+					handlePostUpload(data.data);
+				}
 			})
 			.catch((error) => {
 				console.error("Error:", error);
@@ -103,9 +107,6 @@ async function fetchAndDisplayAllImages() {
 		console.error("Error fetching and displaying images:", error);
 	}
 }
-
-// Call the function to fetch and display images
-fetchAndDisplayAllImages();
 
 function downloadImageHandler() {
 	console.log("download button clicked");
@@ -139,3 +140,25 @@ function downloadImage(imageUrl, imageName) {
 			document.body.removeChild(a);
 		});
 }
+
+function logout() {
+	fetch("/api/logout", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	})
+		.then((response) => {
+			return response.json();
+		})
+		.then((data) => {
+			console.log(data);
+			window.location.replace("/");
+		})
+		.catch((error) => {
+			console.error("Error:", error);
+		});
+}
+
+// Call the function to fetch and display images
+fetchAndDisplayAllImages();

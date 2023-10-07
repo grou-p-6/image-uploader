@@ -3,26 +3,58 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- lottie animation -->
 		<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+		<!-- Icon -->
 		<link
 			rel="shortcut icon"
 			href="{{ url_for('static', filename='images/topIcon.webp') }}"
 			type="image/x-icon"
 		/>
+		<!-- Bootstrap 5 -->
 		<link
 			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 			rel="stylesheet"
 			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 			crossorigin="anonymous"
 		/>
+		<!-- Style -->
 		<link
 			rel="stylesheet"
-			href="{{ url_for('static', filename='style.css') }}"
+			href="{{ url_for('static', filename='css/style.css') }}"
 		/>
-		<script src="{{ url_for('static', filename='script.js') }}"></script>
+		<!-- Script -->
+		<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Righteous&family=Satisfy&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- Font awesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<!--  -->
 		<title>Image Uploader</title>
 	</head>
 	<body>
+		<!-- Navbar -->
+		<div class="d-flex justify-content-between p-4">
+			<div class="fs-5">
+				<span class="fw-bold">Welcome,</span>
+				<span class="username fs-4">ragnarok2</span>!
+			</div>
+			<button
+				class="d-flex justify-content-around align-items-center btn btn-danger rounded-pill px-4 py-2"
+				onclick="logout()"
+			>
+				<div class="me-3"><span class="fs-5 fw-bold">Logout</span></div>
+				<div><i class="fa fa-sign-out fs-3" aria-hidden="true"></i></div>
+			</button>
+		</div>
 		<!-- Main Container for Uploading Part -->
 		<div class="container mt-5 shadow _container">
 			<!-- Title - Upload Image -->
