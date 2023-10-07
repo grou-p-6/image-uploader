@@ -9,23 +9,41 @@ function clearImage() {
 	frame.src = "";
 }
 
-function openModal(url) {
+function getImageSize(sizeInBytes) {
+	const i = Math.floor(Math.log(sizeInBytes) / Math.log(1024));
+	return (
+		(sizeInBytes / Math.pow(1024, i)).toFixed(2) * 1 +
+		" " +
+		["B", "kB", "MB", "GB", "TB"][i]
+	);
+}
+
+function openModal(imageData) {
 	const modalImg = document.getElementById("modalImage");
-	modalImg.src = url;
+	modalImg.src = imageData.url;
 	const imageModal = new bootstrap.Modal(document.getElementById("imageModal"));
+	document.getElementById("imageName").textContent = imageData.image_name
+		.split("_")
+		.slice(2)
+		.join("_");
+	document.getElementById("imageSize").textContent = getImageSize(
+		imageData.size
+	);
+	document.getElementById("imageUploadDate").textContent =
+		imageData.upload_date.split("T")[0];
 	imageModal.show();
 }
 
-function appendImagesToContainer(imagesContainer, url) {
+function appendImagesToContainer(imagesContainer, imageData) {
 	const img = new Image();
-	img.src = url;
+	img.src = imageData.url;
 	img.classList.add("shadow");
 	img.classList.add("cursor_pointer");
-	img.addEventListener("click", () => openModal(url));
+	img.addEventListener("click", () => openModal(imageData));
 	imagesContainer.appendChild(img);
 }
 
-function handleUpload(url) {
+function handlePostUpload(imageData) {
 	const loader = document.getElementById("uploadLoader");
 	const successLoader = document.getElementById("uploadSuccessAnim");
 	const successLoaderDiv = document.getElementById("uploadSuccess");
@@ -36,7 +54,7 @@ function handleUpload(url) {
 	successLoader.play();
 	clearImage();
 
-	appendImagesToContainer(imagesContainer, url);
+	appendImagesToContainer(imagesContainer, imageData);
 }
 
 function sendImageToServer() {
@@ -58,9 +76,8 @@ function sendImageToServer() {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log(data);
-				console.log(data.url);
 				// Handle response from server here
-				handleUpload(data.url);
+				handlePostUpload(data.data);
 			})
 			.catch((error) => {
 				console.error("Error:", error);
@@ -79,8 +96,8 @@ async function fetchAndDisplayAllImages() {
 		const imagesContainer = document.getElementById("imagesContainer");
 
 		// Loop through the image URLs and display each one
-		for (let url of imageUrls.image_urls) {
-			appendImagesToContainer(imagesContainer, url);
+		for (let imageData of imageUrls) {
+			appendImagesToContainer(imagesContainer, imageData);
 		}
 	} catch (error) {
 		console.error("Error fetching and displaying images:", error);
@@ -96,14 +113,29 @@ function downloadImageHandler() {
 	const imageUrl = modalImage.src;
 	const imageName = imageUrl.split("/").pop(); // This will extract the image name from the URL. Modify as needed.
 
-	downloadImage(imageUrl, imageName);
+	downloadImage(imageUrl, decodeURIComponent(imageName));
 }
 
-function downloadImage(url, name) {
-	const anchor = document.createElement("a");
-	anchor.href = url;
-	anchor.download = name;
-	document.body.appendChild(anchor);
-	anchor.click();
-	document.body.removeChild(anchor);
+function downloadImage(imageUrl, imageName) {
+	// Send a request to your Flask backend
+	fetch("/api/download-image", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ url: imageUrl }),
+	})
+		.then((response) => {
+			return response.blob();
+		})
+		.then((blob) => {
+			const a = document.createElement("a");
+			a.href = URL.createObjectURL(blob);
+			// split imageName on _ and remove the first element
+			imageName = imageName.split("_").slice(2).join("_");
+			a.download = imageName; // You can provide a dynamic filename if needed
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		});
 }
