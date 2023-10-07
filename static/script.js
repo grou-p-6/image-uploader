@@ -51,8 +51,6 @@ function sendImageToServer() {
 		const formData = new FormData();
 		formData.append("image", file);
 
-		console.log({ file });
-
 		fetch("/api/upload", {
 			method: "POST",
 			body: formData,
@@ -78,12 +76,10 @@ async function fetchAndDisplayAllImages() {
 		const response = await fetch("/api/images");
 		const imageUrls = await response.json();
 
-		console.log({ imageUrls });
-
 		const imagesContainer = document.getElementById("imagesContainer");
 
 		// Loop through the image URLs and display each one
-		for (let url of imageUrls) {
+		for (let url of imageUrls.image_urls) {
 			appendImagesToContainer(imagesContainer, url);
 		}
 	} catch (error) {
