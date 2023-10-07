@@ -262,9 +262,6 @@ def download_image():
     if not image_url:
         return jsonify(message="Image url is required"), 400
 
-    if not checkURLOwner(image_url):
-        return jsonify(message="Image does not belong to the user"), 400
-
     response = requests.get(image_url)
     image = BytesIO(response.content)
 

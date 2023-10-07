@@ -138,6 +138,9 @@ function downloadImage(imageUrl, imageName) {
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
+		})
+		.catch((error) => {
+			console.error("Error:", error);
 		});
 }
 
