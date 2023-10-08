@@ -15,10 +15,10 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-app.config['JWT_SECRET_KEY'] = 'super-secret'
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET', 'default_secret')
 jwt = JWTManager(app)
 
-BUCKET_NAME = 'images_g6p2'
+BUCKET_NAME = os.environ.get('BUCKET_NAME', 'default')
 
 
 # Client for datastore
