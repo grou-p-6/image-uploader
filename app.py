@@ -102,41 +102,6 @@ def download_image():
 
     return send_file(image, as_attachment=True, download_name=imageName)
 
-# ROUTE TO delete image
-
-
-@app.route('/api/delete-image', methods=['DELETE'])
-def delete_image():
-    try:
-        print("HERE")
-        data = request.json
-        image_url = data.get('url')
-        print(image_url)
-        if not image_url:
-            return jsonify(error='Image name is required'), 400
-
-        image_name = unquote(image_url.split("/")[-1])
-
-        bucket = storage_client.get_bucket(BUCKET_NAME)
-        blob = bucket.blob(image_name)
-        blob.delete()
-
-        # Delete the metadata from the Datastore
-        query = client.query(kind='Image')
-        query.add_filter('image_name', '=', image_name)
-        entities = list(query.fetch())
-
-        if not entities:
-            return jsonify(error='Image metadata not found'), 404
-
-        entity_key = entities[0].key
-        client.delete(entity_key)
-
-        return jsonify(message='Image and metadata deleted successfully'), 200
-    except Exception as e:
-        print(e)  # For development/debugging purposes
-        return jsonify(error='An error occurred while trying to delete the image and metadata'), 500
-
 
 if __name__ == "__main__":
     # extra_files = glob.glob('templates/*.html', recursive=True) + \

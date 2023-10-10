@@ -147,33 +147,6 @@ function downloadImage(imageUrl, imageName) {
 		});
 }
 
-function deleteImageHandler() {
-	console.log("delete button clicked");
-	const modalImage = document.getElementById("modalImage");
-	const imageUrl = modalImage.src;
-	deleteImage(imageUrl);
-}
-
-function deleteImage(imageUrl) {
-	fetch("/api/delete-image", {
-		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ url: imageUrl }),
-	})
-		.then((response) => {
-			return response.json();
-		})
-		.then((data) => {
-			console.log(data);
-			window.location.reload();
-		})
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-}
-
 function logout() {
 	fetch("/api/logout", {
 		method: "POST",
