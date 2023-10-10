@@ -25,6 +25,7 @@ const login = () => {
 	document.getElementById("loaderModal").style.display = "block";
 
 	if (!validate(username, password)) {
+		document.getElementById("loaderModal").style.display = "none";
 		return;
 	}
 
@@ -62,6 +63,7 @@ const signup = () => {
 	document.getElementById("loaderModal").style.display = "block";
 
 	if (!validate(username, password)) {
+		document.getElementById("loaderModal").style.display = "none";
 		return;
 	}
 

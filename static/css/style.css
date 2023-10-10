@@ -53,6 +53,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	align-items: center;
 }
 #imagesContainer img {
 	width: 10em;
