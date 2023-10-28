@@ -12,8 +12,8 @@ from urllib.parse import unquote
 app = Flask(__name__)
 CORS(app)
 
-# BUCKET_NAME = os.environ.get('BUCKET_NAME', 'default')
-BUCKET_NAME = "images_g6p2"
+BUCKET_NAME = os.environ.get('BUCKET_NAME')
+# BUCKET_NAME = "images_g6p2"
 
 
 # Client for datastore
