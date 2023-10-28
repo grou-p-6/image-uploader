@@ -13,7 +13,6 @@ app = Flask(__name__)
 CORS(app)
 
 BUCKET_NAME = os.environ.get('BUCKET_NAME')
-# BUCKET_NAME = "images_g6p2"
 
 
 # Client for datastore
