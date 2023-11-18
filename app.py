@@ -23,10 +23,16 @@ jwt = JWTManager(app)
 
 BUCKET_NAME = os.environ.get('BUCKET_NAME')
 
+GOOGLE_APPLICATION_CREDENTIALS = os.environ.get('GOOGLE_APPLICATION')
+with open('google-credentials.json', 'w') as outfile:
+    outfile.write(GOOGLE_APPLICATION_CREDENTIALS)
+
 
 # Client for datastore
-storage_client = storage.Client()
-client = datastore.Client()
+storage_client = storage.Client.from_service_account_json(
+    'google-credentials.json')
+client = datastore.Client.from_service_account_json(
+    'google-credentials.json')
 uploaded_image_count = 0
 user = None
 
@@ -241,7 +247,7 @@ def generate_signed_url(object_name):
     bucket = storage_client.get_bucket(BUCKET_NAME)
     blob = bucket.blob(object_name)
     signed_url = blob.generate_signed_url(
-        expiration=timedelta(minutes=2))
+        expiration=timedelta(minutes=30))
     return signed_url
 
 
