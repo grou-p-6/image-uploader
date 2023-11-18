@@ -337,9 +337,9 @@ def download_image():
 
 
 if __name__ == "__main__":
-    extra_files = glob.glob('templates/*.html', recursive=True) + \
-        glob.glob('static/**/*.css', recursive=True) + \
-        glob.glob('static/**/*.js', recursive=True)
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)),
-            extra_files=extra_files, debug=True)
-    # app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
+    # extra_files = glob.glob('templates/*.html', recursive=True) + \
+    #     glob.glob('static/**/*.css', recursive=True) + \
+    #     glob.glob('static/**/*.js', recursive=True)
+    # app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)),
+    #         extra_files=extra_files, debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
