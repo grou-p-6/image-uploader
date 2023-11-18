@@ -38,12 +38,25 @@ function openModal(imageData) {
 }
 
 function appendImagesToContainer(imagesContainer, imageData) {
+	const imageContainer = document.createElement("div");
+	imageContainer.classList.add("image-container");
+
 	const img = new Image();
 	img.src = imageData.url;
-	img.classList.add("shadow");
-	img.classList.add("cursor_pointer");
+	img.classList.add("shadow", "cursor_pointer");
 	img.addEventListener("click", () => openModal(imageData));
-	imagesContainer.appendChild(img);
+	imageContainer.appendChild(img);
+	const overlay = document.createElement("div");
+	overlay.classList.add("overlay");
+	imageContainer.appendChild(overlay);
+
+	imagesContainer.appendChild(imageContainer);
+
+	document
+		.querySelector(".image-container:last-child")
+		.addEventListener("contextmenu", (e) => {
+			e.preventDefault();
+		});
 }
 
 function handlePostUpload(imageData) {
@@ -141,6 +154,33 @@ function downloadImage(imageUrl, imageName) {
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
+		})
+		.catch((error) => {
+			console.error("Error:", error);
+		});
+}
+
+function deleteImageHandler() {
+	console.log("delete button clicked");
+	const modalImage = document.getElementById("modalImage");
+	const imageUrl = modalImage.src;
+	deleteImage(imageUrl);
+}
+
+function deleteImage(imageUrl) {
+	fetch("/api/delete-image", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ url: imageUrl }),
+	})
+		.then((response) => {
+			return response.json();
+		})
+		.then((data) => {
+			console.log(data);
+			window.location.reload();
 		})
 		.catch((error) => {
 			console.error("Error:", error);
