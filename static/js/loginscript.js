@@ -41,7 +41,6 @@ const login = () => {
 	})
 		.then(async (response) => {
 			const data = await response.json();
-			console.log(data.message);
 			if (response.status == 400) {
 				alert(data.message);
 				document.getElementById("loaderModal").style.display = "none";
@@ -79,7 +78,6 @@ const signup = () => {
 	})
 		.then(async (response) => {
 			const data = await response.json();
-			console.log(data.message);
 			if (response.status == 400) {
 				alert(data.message);
 				document.getElementById("loaderModal").style.display = "none";
