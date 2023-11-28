@@ -9,10 +9,10 @@ const validate = (username, password) => {
 		return false;
 	}
 
-	if (username.length > 20) {
-		alert("Username must be less than 20 characters");
-		return false;
-	}
+	// if (username.length > 20) {
+	// 	alert("Username must be less than 20 characters");
+	// 	return false;
+	// }
 
 	return true;
 };
